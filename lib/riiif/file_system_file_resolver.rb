@@ -19,7 +19,12 @@ module Riiif
 
 
     def pattern(id)
-      raise ArgumentError, "Invalid characters in id `#{id}`" unless /^[\w\-:]+$/.match(id)
+      if ::Riiif::Engine.config.allow_filename_slashes
+        valid_pattern = /^[\w\-:\/]+$/
+      else
+        valid_pattern = /^[\w\-:]+$/
+      end
+      raise ArgumentError, "Invalid characters in id `#{id}`" unless valid_pattern.match(id)
       ::File.join(base_path, "#{id}.{#{input_types.join(',')}}")
     end
 
