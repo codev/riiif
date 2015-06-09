@@ -20,6 +20,8 @@ module Riiif
 
     def pattern(id)
       if ::Riiif::Engine.config.allow_filename_slashes
+        # Hack to allow subdirectories to be passed in by substituting slashes for pipes
+        id.gsub!("|", "/")
         valid_pattern = /^[\w\-:\/]+$/
       else
         valid_pattern = /^[\w\-:]+$/
